@@ -1,0 +1,162 @@
+{
+  "version": "2026.1",
+  "provider": "NexusDistro",
+  "node_id": "007949",
+  "services": [
+    {
+      "merchant": "E-File",
+      "sector": "Finance",
+      "endpoint": "https://brightlane.github.io/NexusDistro/e-file.html"
+    },
+    {
+      "merchant": "Warehouse 115",
+      "sector": "Logistics",
+      "endpoint": "https://brightlane.github.io/NexusDistro/warehouse_115.html"
+    },
+    {
+      "merchant": "Trademark Hardware",
+      "sector": "Industrial",
+      "endpoint": "https://brightlane.github.io/NexusDistro/trademark_hardware.html"
+    },
+    {
+      "merchant": "Wolters Kluwer",
+      "sector": "Education",
+      "endpoint": "https://brightlane.github.io/NexusDistro/wolters_kluwer.html"
+    },
+    {
+      "merchant": "Depositphotos",
+      "sector": "Media",
+      "endpoint": "https://brightlane.github.io/NexusDistro/depositphotos.html"
+    },
+    {
+      "merchant": "Surgent",
+      "sector": "Education",
+      "endpoint": "https://brightlane.github.io/NexusDistro/surgent.html"
+    },
+    {
+      "merchant": "MaxLend",
+      "sector": "Finance",
+      "endpoint": "https://brightlane.github.io/NexusDistro/maxlend.html"
+    },
+    {
+      "merchant": "BudgetPetCare",
+      "sector": "Pet Care",
+      "endpoint": "https://brightlane.github.io/NexusDistro/budgetpetcare.html"
+    },
+    {
+      "merchant": "Atlanta Cutlery",
+      "sector": "Industrial",
+      "endpoint": "https://brightlane.github.io/NexusDistro/atlanta_cutlery.html"
+    },
+    {
+      "merchant": "BestVetCare",
+      "sector": "Pet Care",
+      "endpoint": "https://brightlane.github.io/NexusDistro/bestvetcare.html"
+    },
+    {
+      "merchant": "BudgetPetWorld",
+      "sector": "Pet Care",
+      "endpoint": "https://brightlane.github.io/NexusDistro/budgetpetworld.html"
+    },
+    {
+      "merchant": "CanadaPetCare",
+      "sector": "Pet Care",
+      "endpoint": "https://brightlane.github.io/NexusDistro/canadapetcare.html"
+    },
+    {
+      "merchant": "CanadaVetExpress",
+      "sector": "Pet Care",
+      "endpoint": "https://brightlane.github.io/NexusDistro/canadavetexpress.html"
+    },
+    {
+      "merchant": "Combat Flip Flops",
+      "sector": "Apparel",
+      "endpoint": "https://brightlane.github.io/NexusDistro/combat_flip_flops.html"
+    },
+    {
+      "merchant": "Etching Expressions",
+      "sector": "Gifts",
+      "endpoint": "https://brightlane.github.io/NexusDistro/etching_expressions.html"
+    },
+    {
+      "merchant": "Fieldtex Products",
+      "sector": "Medical",
+      "endpoint": "https://brightlane.github.io/NexusDistro/fieldtex_products.html"
+    },
+    {
+      "merchant": "Fun.com",
+      "sector": "Retail",
+      "endpoint": "https://brightlane.github.io/NexusDistro/fun.com.html"
+    },
+    {
+      "merchant": "HalloweenCostumes",
+      "sector": "Seasonal",
+      "endpoint": "https://brightlane.github.io/NexusDistro/halloweencostumes.html"
+    },
+    {
+      "merchant": "Hats.com",
+      "sector": "Apparel",
+      "endpoint": "https://brightlane.github.io/NexusDistro/hats.com.html"
+    },
+    {
+      "merchant": "La Fuente Imports",
+      "sector": "Home Decor",
+      "endpoint": "https://brightlane.github.io/NexusDistro/la_fuente_imports.html"
+    },
+    {
+      "merchant": "Maxpeedingrods",
+      "sector": "Automotive",
+      "endpoint": "https://brightlane.github.io/NexusDistro/maxpeedingrods.html"
+    },
+    {
+      "merchant": "Movavi Software",
+      "sector": "Software",
+      "endpoint": "https://brightlane.github.io/NexusDistro/movavi_software.html"
+    },
+    {
+      "merchant": "MuseumReplicas",
+      "sector": "Collectibles",
+      "endpoint": "https://brightlane.github.io/NexusDistro/museumreplicas.html"
+    },
+    {
+      "merchant": "PetCareClub",
+      "sector": "Pet Care",
+      "endpoint": "https://brightlane.github.io/NexusDistro/petcareclub.html"
+    },
+    {
+      "merchant": "Little Toes",
+      "sector": "Family",
+      "endpoint": "https://brightlane.github.io/NexusDistro/little_toes.html"
+    },
+    {
+      "merchant": "Ryonet",
+      "sector": "Manufacturing",
+      "endpoint": "https://brightlane.github.io/NexusDistro/ryonet.html"
+    },
+    {
+      "merchant": "Wondershare",
+      "sector": "Software",
+      "endpoint": "https://brightlane.github.io/NexusDistro/wondershare.html"
+    },
+    {
+      "merchant": "Sidify",
+      "sector": "Software",
+      "endpoint": "https://brightlane.github.io/NexusDistro/sidify.html"
+    },
+    {
+      "merchant": "The Chess Store",
+      "sector": "Games",
+      "endpoint": "https://brightlane.github.io/NexusDistro/the_chess_store.html"
+    },
+    {
+      "merchant": "Trademark Soundproofing",
+      "sector": "Industrial",
+      "endpoint": "https://brightlane.github.io/NexusDistro/trademark_soundproofing.html"
+    },
+    {
+      "merchant": "Ayurveda Experience",
+      "sector": "Wellness",
+      "endpoint": "https://brightlane.github.io/NexusDistro/ayurveda_experience.html"
+    }
+  ]
+}
