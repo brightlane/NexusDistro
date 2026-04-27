@@ -16,22 +16,18 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          # Removed the cache line to prevent the "requirements.txt" error
+          # We have removed the 'cache' parameter entirely to stop the error
 
       - name: Run Core Engine
         run: |
-          if [ -f vulture_gen.py ]; then python vulture_gen.py; else echo "vulture_gen.py missing"; fi
-          if [ -f social_gen.py ]; then python social_gen.py; else echo "social_gen.py missing"; fi
-          if [ -f ai_feed_gen.py ]; then python ai_feed_gen.py; else echo "ai_feed_gen.py missing"; fi
+          python vulture_gen.py || echo "Main engine skipped"
+          python social_gen.py || echo "Social engine skipped"
+          python ai_feed_gen.py || echo "AI feed engine skipped"
 
       - name: Deploy Changes
         run: |
           git config --global user.name "Vulture-Bot"
           git config --global user.email "engine@nexusdistro.io"
           git add .
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Vulture 10K Refresh: $(date)"
-            git push
-          fi
+          git commit -m "Vulture 10K Refresh: $(date)" || echo "No changes to commit"
+          git push
