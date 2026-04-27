@@ -12,26 +12,15 @@ jobs:
       - name: 1. Pull Code
         uses: actions/checkout@v4
 
-      - name: 2. Create Dummy Requirements
-        # This creates the file the error is looking for so it stops crashing
-        run: touch requirements.txt
-
-      - name: 3. Verify Files Exist
-        # This will show us in the logs if your scripts are actually there
-        run: ls -R
-
-      - name: 4. Set Up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: 5. Execute Vulture Scripts
+      - name: 2. Execute Vulture Scripts
+        # We skip the "setup-python" step entirely. 
+        # Ubuntu-latest has Python pre-installed.
         run: |
-          python vulture_gen.py || echo "vulture_gen failed"
-          python social_gen.py || echo "social_gen failed"
-          python ai_feed_gen.py || echo "ai_feed_gen failed"
+          python3 vulture_gen.py || echo "vulture_gen failed"
+          python3 social_gen.py || echo "social_gen failed"
+          python3 ai_feed_gen.py || echo "ai_feed_gen failed"
 
-      - name: 6. Commit and Push
+      - name: 3. Commit and Push
         run: |
           git config --global user.name "Vulture-Bot"
           git config --global user.email "bot@nexusdistro.com"
