@@ -1,0 +1,31 @@
+name: Daily Vulture 10K Engine
+
+on:
+  schedule:
+    # Runs at 06:00 UTC (Early morning refresh)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allows you to trigger a manual build anytime
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Run Vulture Engine
+        run: |
+          python vulture_gen.py
+
+      - name: Deploy to GitHub Pages
+        run: |
+          git config --global user.name "NexusDistro-Bot"
+          git config --global user.email "bot@nexusdistro.io"
+          git add .
+          git commit -m "Daily SEO Update: Hub, Blog & 28 Merchant Nodes [$(date)]" || echo "No changes to commit"
+          git push
