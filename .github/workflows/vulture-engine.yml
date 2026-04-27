@@ -1,0 +1,29 @@
+name: Vulture 10K Engine
+
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  build_network:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Pull Code
+        uses: actions/checkout@v4
+
+      - name: 2. Execute Vulture Scripts
+        # We skip the "setup-python" step entirely. 
+        # Ubuntu-latest has Python pre-installed.
+        run: |
+          python3 vulture_gen.py || echo "vulture_gen failed"
+          python3 social_gen.py || echo "social_gen failed"
+          python3 ai_feed_gen.py || echo "ai_feed_gen failed"
+
+      - name: 3. Commit and Push
+        run: |
+          git config --global user.name "Vulture-Bot"
+          git config --global user.email "bot@nexusdistro.com"
+          git add .
+          git commit -m "Engine Refresh $(date)" || echo "Nothing to update"
+          git push
