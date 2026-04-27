@@ -1,16 +1,11 @@
-# New Sitemap Logic
-sitemap_header = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-sitemap_footer = '</urlset>'
-sitemap_urls = [f'  <url><loc>https://brightlane.github.io/NexusDistro/</loc><priority>1.0</priority></url>']
-
-# Loop through the merchants we just generated
-for m in data['merchants']:
-    filename = f"{m['name'].lower().replace(' ', '_')}.html"
-    url = f"  <url><loc>https://brightlane.github.io/NexusDistro/{filename}</loc><priority>0.8</priority></url>"
-    sitemap_urls.append(url)
-
-# Write the final sitemap
-with open('sitemap.xml', 'w') as s:
-    s.write(sitemap_header + "\n".join(sitemap_urls) + sitemap_footer)
-
-print("Sitemap.xml successfully generated for 10K Engine.")
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://brightlane.github.io/NexusDistro/</loc><priority>1.0</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/e-file.html</loc><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/warehouse_115.html</loc><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/trademark_hardware.html</loc><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/wolters_kluwer.html</loc><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/depositphotos.html</loc><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/surgent.html</loc><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/maxlend.html</loc><priority>0.8</priority></url>
+  <url><loc>https://brightlane.github.io/NexusDistro/budgetpetcare.html</loc><priority>0.8</priority></url></urlset>
