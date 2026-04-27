@@ -1,90 +1,37 @@
-import json
-import os
+name: Vulture 10K Engine
 
-# 1. Load Data
-with open('affiliate.json', 'r') as f:
-    data = json.load(f)
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch: 
 
-aff_id = data['affiliate_info']['account_id']
-merchants = data['merchants']
-base_url = "https://www.linkconnector.com/ta.php?lc="
+jobs:
+  build_network:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-# 2. Page Templates
-MERCHANT_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{name} | NexusDistro Node</title>
-    <style>
-        body {{ background: #050a14; color: #ccd6f6; font-family: sans-serif; text-align: center; padding: 100px; }}
-        .box {{ border: 1px solid #64ffda; padding: 50px; border-radius: 12px; background: #0a192f; display: inline-block; }}
-        .btn {{ background: #facc15; color: #000; padding: 20px 40px; text-decoration: none; font-weight: bold; border-radius: 5px; font-size: 1.2rem; }}
-        h1 {{ color: #64ffda; margin-bottom: 30px; }}
-    </style>
-</head>
-<body>
-    <div class="box">
-        <h1>{name}</h1>
-        <p>Authorized {category} Distribution Node</p><br><br>
-        <a href="{link}" class="btn">ACCESS OFFICIAL PORTAL</a>
-    </div>
-</body>
-</html>
-"""
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-INDEX_START = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>NexusDistro | Global Distribution Network</title>
-    <style>
-        body { background: #050a14; color: #ccd6f6; font-family: sans-serif; margin: 0; }
-        header { padding: 50px; text-align: center; background: #0a192f; border-bottom: 1px solid #112240; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: auto; }
-        .card { background: #0a192f; border: 1px solid #112240; padding: 20px; border-radius: 10px; text-align: center; }
-        .card:hover { border-color: #64ffda; }
-        .card h3 { color: #64ffda; margin: 0 0 10px 0; }
-        .btn { color: #facc15; text-decoration: none; font-size: 0.9rem; font-weight: bold; border: 1px solid #facc15; padding: 5px 10px; border-radius: 4px; }
-    </style>
-</head>
-<body>
-    <header><h1>NexusDistro</h1><p>Global Affiliate Distribution Node: 007949</p></header>
-    <div class="grid">
-"""
+      - name: Run Core Engine
+        run: |
+          # The -f check ensures the action doesn't fail if a file is missing
+          if [ -f vulture_gen.py ]; then python vulture_gen.py; else echo "vulture_gen.py not found"; fi
+          if [ -f social_gen.py ]; then python social_gen.py; else echo "social_gen.py not found"; fi
+          if [ -f ai_feed_gen.py ]; then python ai_feed_gen.py; else echo "ai_feed_gen.py not found"; fi
 
-# 3. Processing
-sitemap_urls = [f'  <url><loc>https://brightlane.github.io/NexusDistro/</loc><priority>1.0</priority></url>']
-cards_html = ""
-
-for m in merchants:
-    full_link = f"{base_url}{aff_id}{m['suffix']}"
-    filename = f"{m['name'].lower().replace(' ', '_').replace('.', '_')}.html"
-    
-    # Generate Merchant Page
-    with open(filename, 'w') as f:
-        f.write(MERCHANT_TEMPLATE.format(name=m['name'], category=m['category'], link=full_link))
-    
-    # Generate Index Card
-    cards_html += f"""
-        <div class="card">
-            <h3>{m['name']}</h3>
-            <p>{m['category']}</p>
-            <a href="{filename}" class="btn">View Portal</a>
-        </div>
-    """
-    
-    # Add to Sitemap list
-    sitemap_urls.append(f'  <url><loc>https://brightlane.github.io/NexusDistro/{filename}</loc><priority>0.8</priority></url>')
-
-# 4. Save Index
-with open('index.html', 'w') as f:
-    f.write(INDEX_START + cards_html + "\n    </div>\n</body>\n</html>")
-
-# 5. Save Sitemap
-s_header = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-with open('sitemap.xml', 'w') as s:
-    s.write(s_header + "\n".join(sitemap_urls) + '\n</urlset>')
-
-print(f"Successfully generated Index and {len(merchants)} merchant nodes.")
+      - name: Deploy Changes
+        run: |
+          git config --global user.name "Vulture-Bot"
+          git config --global user.email "engine@nexusdistro.io"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Vulture 10K Refresh: $(date)"
+            git push
+          fi
