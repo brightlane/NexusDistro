@@ -1,14 +1,14 @@
 import json
 import os
 
-# Load the Affiliate Data
+# 1. Load the Affiliate Data - FIXED TYPO HERE
 with open('affiliate.json', 'r') as f:
-    data = json.json_load(f)
+    data = json.load(f)
 
 base_url = "https://www.linkconnector.com/ta.php?lc="
 aff_id = data['affiliate_info']['account_id']
 
-# HTML Template for Merchant Sub-Pages
+# 2. HTML Template
 template = """
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +34,9 @@ template = """
 </html>
 """
 
-# Generate the Pages
+# 3. Generate the Pages
+sitemap_urls = [f'  <url><loc>https://brightlane.github.io/NexusDistro/</loc><priority>1.0</priority></url>']
+
 for m in data['merchants']:
     full_link = f"{base_url}{aff_id}{m['suffix']}"
     page_content = template.format(
@@ -44,10 +46,17 @@ for m in data['merchants']:
         aff_id=aff_id
     )
     
-    # Create filenames based on merchant name
     filename = f"{m['name'].lower().replace(' ', '_')}.html"
     with open(filename, 'w') as f:
         f.write(page_content)
-    print(f"Generated: {filename}")
+    
+    # Build sitemap list
+    sitemap_urls.append(f'  <url><loc>https://brightlane.github.io/NexusDistro/{filename}</loc><priority>0.8</priority></url>')
 
-print("Vulture Engine Run Complete.")
+# 4. Generate Sitemap
+sitemap_header = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+sitemap_footer = '</urlset>'
+with open('sitemap.xml', 'w') as s:
+    s.write(sitemap_header + "\n".join(sitemap_urls) + sitemap_footer)
+
+print("Engine fixed and Sitemap generated.")
