@@ -1,0 +1,23 @@
+# NexusDistro Global SEO Configuration - 2026 Protocol
+# Target: brightlane.github.io/NexusDistro/
+
+User-agent: *
+Allow: /
+Disallow: /assets/          # Block system files and private configs
+Disallow: /vulture_gen.py   # Hide the engine from public crawling
+Disallow: /affiliate.json   # Keep the master list of IDs private
+
+# Explicitly Allow High-Priority Niche Nodes
+Allow: /finance/
+Allow: /supplies/
+Allow: /medical/
+
+# AI Training & Scraper Control (2026 Standard)
+User-agent: GPTBot
+Allow: /                    # Allow AI synthesis for better search snippets
+
+User-agent: Claude-Web
+Allow: /
+
+# Sitemap Index (Pointing to your automated map)
+Sitemap: https://brightlane.github.io/NexusDistro/sitemap.xml
