@@ -1,0 +1,31 @@
+name: Vulture 10K Engine Auto-Update
+
+on:
+  schedule:
+    # Runs at 05:00 UTC every single day
+    - cron: '0 5 * * *'
+  workflow_dispatch: # Allows you to run it manually anytime
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/checkout@v4
+        with:
+          python-version: '3.10'
+
+      - name: Execute Vulture Generator
+        run: |
+          python vulture_gen.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "NexusDistro-Bot"
+          git config --global user.email "bot@nexusdistro.io"
+          git add .
+          git commit -m "Vulture Engine: Daily Inventory & SEO Refresh [$(date)]" || echo "No changes to commit"
+          git push
