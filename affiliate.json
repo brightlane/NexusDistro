@@ -1,0 +1,17 @@
+{
+  "affiliate_info": {
+    "network": "LinkConnector",
+    "account_id": "007949",
+    "last_sync": "2026-04-27"
+  },
+  "merchants": [
+    { "name": "E-File", "suffix": "054186005142", "category": "Finance" },
+    { "name": "Warehouse 115", "suffix": "15497705142", "category": "Logistics" },
+    { "name": "Trademark Hardware", "suffix": "041221005142", "category": "Industrial" },
+    { "name": "Wolters Kluwer", "suffix": "01834005142", "category": "Education" },
+    { "name": "Depositphotos", "suffix": "005353205142", "category": "Media" },
+    { "name": "Surgent", "suffix": "018031005142", "category": "Education" },
+    { "name": "MaxLend", "suffix": "096598005765", "category": "Finance" },
+    { "name": "BudgetPetCare", "suffix": "031801005142", "category": "Pet Care" }
+  ]
+}
