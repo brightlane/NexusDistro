@@ -2,9 +2,9 @@ name: NexusDistro Master Automation
 
 on:
   schedule:
-    # Runs at 06:00 UTC every morning
+    # Runs at 06:00 UTC every morning (1:00 AM EST)
     - cron: '0 6 * * *'
-  workflow_dispatch: # Manual trigger button
+  workflow_dispatch: # Allows you to push the "Run" button manually
 
 jobs:
   automation_run:
@@ -19,17 +19,18 @@ jobs:
           python-version: '3.10'
 
       - name: Run Full Site & Blog Engine
-        run: |
-          python vulture_gen.py
+        run: python vulture_gen.py
 
       - name: Run Social Media Post Generator
-        run: |
-          python social_gen.py
+        run: python social_gen.py
+
+      - name: Run AI Agent Discovery Generator
+        run: python ai_feed_gen.py
 
       - name: Push All Updates to GitHub
         run: |
           git config --global user.name "NexusDistro-Bot"
           git config --global user.email "bot@nexusdistro.io"
           git add .
-          git commit -m "Vulture Master Sync: [$(date +'%Y-%m-%d')] Hub, Blog, & Social Queue Updated" || echo "No changes to commit"
+          git commit -m "Vulture Master Sync: [$(date +'%Y-%m-%d')] Hub, Blog, Social, & AI Feeds Updated" || echo "No changes to commit"
           git push
