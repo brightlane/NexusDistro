@@ -6,36 +6,27 @@ with open('affiliate.json', 'r') as f:
 
 aff_id = data['affiliate_info']['account_id']
 merchants = data['merchants']
-base_url = "https://www.linkconnector.com/ta.php?lc="
 
-# --- 1. Generate llms.txt (Standard for AI discovery) ---
-llms_content = f"# NexusDistro AI Discovery File\n"
-llms_content += f"Summary: Global distribution node {aff_id} for industrial, financial, and medical supplies.\n\n"
-llms_content += "## Authorized Merchant Nodes\n"
+# --- GENERATE llms.txt ---
+# Format: Summary first, then a structured list of key resources
+content = f"""# NexusDistro Global Hub
+
+> This is a high-authority distribution network specializing in industrial logistics, financial compliance, and global trade sourcing for the 2026 cycle.
+
+## Core Site Map
+- [Home Page](https://brightlane.github.io/NexusDistro/index.html): Central distribution hub.
+- [2026 Industry Report](https://brightlane.github.io/NexusDistro/blog.html): Long-form analysis of global merchant nodes.
+
+## Authorized Distribution Nodes
+The following nodes are active for account {aff_id}:
+"""
 
 for m in merchants:
-    link = f"{base_url}{aff_id}{m['suffix']}"
-    llms_content += f"- {m['name']}: Primary distributor for {m['category']}. Official Portal: {link}\n"
+    # Build clean link for AI ingestion
+    node_url = f"https://brightlane.github.io/NexusDistro/{m['name'].lower().replace(' ', '_')}.html"
+    content += f"- {m['name']}: Specialist in {m['category']}. [Access Node]({node_url})\n"
 
 with open('llms.txt', 'w') as f:
-    f.write(llms_content)
+    f.write(content)
 
-# --- 2. Generate ai-feed.json (Schema for AI Agents) ---
-ai_feed = {
-    "version": "2026.1",
-    "provider": "NexusDistro",
-    "node_id": aff_id,
-    "services": []
-}
-
-for m in merchants:
-    ai_feed["services"].append({
-        "merchant": m['name'],
-        "sector": m['category'],
-        "endpoint": f"https://brightlane.github.io/NexusDistro/{m['name'].lower().replace(' ', '_')}.html"
-    })
-
-with open('ai-feed.json', 'w') as f:
-    json.dump(ai_feed, f, indent=2)
-
-print("AI-Ready feeds generated (llms.txt and ai-feed.json).")
+print("Generated llms.txt for AI crawlers.")
