@@ -8,22 +8,23 @@ on:
 jobs:
   build_network:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: 1. Pull Code
         uses: actions/checkout@v4
 
-      - name: 2. Execute Vulture Scripts
-        # We skip the "setup-python" step entirely. 
-        # Ubuntu-latest has Python pre-installed.
+      - name: 2. Run Python Scripts
+        # Ubuntu-latest has Python 3 pre-installed, so we don't need a 'setup' step.
         run: |
-          python3 vulture_gen.py || echo "vulture_gen failed"
-          python3 social_gen.py || echo "social_gen failed"
-          python3 ai_feed_gen.py || echo "ai_feed_gen failed"
+          python3 vulture_gen.py || echo "Main engine skipped"
+          python3 social_gen.py || echo "Social engine skipped"
+          python3 ai_feed_gen.py || echo "AI feed engine skipped"
 
-      - name: 3. Commit and Push
+      - name: 3. Push to GitHub Pages
         run: |
           git config --global user.name "Vulture-Bot"
-          git config --global user.email "bot@nexusdistro.com"
+          git config --global user.email "bot@nexusdistro.io"
           git add .
-          git commit -m "Engine Refresh $(date)" || echo "Nothing to update"
+          git commit -m "Vulture 10K Refresh: $(date)" || echo "No changes to commit"
           git push
