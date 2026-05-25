@@ -2,54 +2,98 @@ name: Vulture 10K Engine - Professional Scale
 
 on:
   schedule:
-    # Runs at 04:00 UTC (12:00 AM EST) to stay ahead of peak traffic
-    - cron: '0 4 * * *'
-  workflow_dispatch: # Manual "Generate" button
+    # Runs daily at 04:00 UTC
+    - cron: "0 4 * * *"
 
-# Prevent multiple runs from overlapping and corrupting the 10K database
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 concurrency:
   group: vulture-engine
   cancel-in-progress: true
 
 jobs:
-  build_network:
+  build_and_deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1 # Shallow clone to save speed at 10K scale
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Setup Python 3.10
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-          cache: 'pip' # Speeds up repeated runs
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Upgrade Pip
+        run: |
+          python -m pip install --upgrade pip
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          # Add 'requests' or 'pandas' here if your 10K script needs them
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt found"
+          fi
+
+      - name: Verify Repository Files
+        run: |
+          ls -la
+
+      - name: Sync Latest Remote Changes
+        run: |
+          git fetch origin
+          git checkout main
+          git pull origin main --rebase
 
       - name: Run Vulture 10K Engine
         run: |
-          # Executes the Hub, 10K Blog, and AI-Discovery feeds
-          python vulture_gen.py
-          python social_gen.py
-          python ai_feed_gen.py
-
-      - name: Deploy 10K Architecture
-        run: |
-          git config --global user.name "Vulture-10K-Bot"
-          git config --global user.email "engine@nexusdistro.io"
-          
-          # Use a bulk add to handle the 10,000 file index efficiently
-          git add .
-          
-          # Only commit if changes exist to avoid empty builds
-          if git diff --staged --quiet; then
-            echo "No changes detected in the 10K network."
+          if [ -f vulture_gen.py ]; then
+            python vulture_gen.py
           else
-            git commit -m "Vulture 10K: Automated Daily Refresh [$(date +'%Y-%m-%d')]"
-            git push origin main
+            echo "vulture_gen.py missing"
           fi
+
+          if [ -f social_gen.py ]; then
+            python social_gen.py
+          else
+            echo "social_gen.py missing"
+          fi
+
+          if [ -f ai_feed_gen.py ]; then
+            python ai_feed_gen.py
+          else
+            echo "ai_feed_gen.py missing"
+          fi
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "NexusDistro-Bot"
+          git config --global user.email "engine@nexusdistro.io"
+
+      - name: Commit Changes
+        run: |
+          git add .
+
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          git commit -m "Vulture 10K: Automated Daily Refresh [$(date +'%Y-%m-%d')]"
+
+      - name: Pull Latest Changes Before Push
+        run: |
+          git pull origin main --rebase
+
+      - name: Push Changes
+        run: |
+          git push origin main
+
+      - name: Workflow Finished
+        run: |
+          echo "Vulture 10K Engine completed successfully"
