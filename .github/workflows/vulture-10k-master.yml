@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: vulture-engine
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build_and_deploy:
@@ -43,15 +43,20 @@ jobs:
             echo "No requirements.txt found"
           fi
 
-      - name: Verify Repository Files
+      - name: Configure Git
         run: |
-          ls -la
+          git config --global user.name "Vulture-Bot"
+          git config --global user.email "engine@nexusdistro.io"
 
       - name: Sync Latest Remote Changes
         run: |
-          git fetch origin
+          git fetch origin main
           git checkout main
-          git pull origin main --rebase
+          git pull --rebase origin main
+
+      - name: Verify Repository Files
+        run: |
+          ls -la
 
       - name: Run Vulture 10K Engine
         run: |
@@ -73,26 +78,42 @@ jobs:
             echo "ai_feed_gen.py missing"
           fi
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "NexusDistro-Bot"
-          git config --global user.email "engine@nexusdistro.io"
-
       - name: Commit Changes
+        shell: bash
         run: |
           git add .
 
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
 
-          git commit -m "Vulture 10K: Automated Daily Refresh [$(date +'%Y-%m-%d')]"
+          git commit -m "Vulture 10K Refresh: $(date)"
 
-      - name: Pull Latest Changes Before Push
+      - name: Safe Push Retry Loop
+        shell: bash
         run: |
-          git pull origin main --rebase
+          for i in 1 2 3 4 5; do
+            echo "Push attempt $i"
 
-      - name: Push Changes
-        run: |
-          git push origin main
+            git pull --rebase origin main || {
+              echo "Rebase failed. Aborting..."
+              git rebase --abort || true
+              sleep 5
+              continue
+            }
+
+            if git push origin main; then
+              echo "Push successful."
+              exit 0
+            fi
+
+            echo "Push rejected. Retrying..."
+            sleep 5
+          done
+
+          echo "Failed to push after multiple attempts."
+          exit 1
 
       - name: Workflow Finished
         run: |
